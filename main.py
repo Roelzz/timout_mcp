@@ -71,5 +71,36 @@ async def delay_120s() -> str:
     return f"Survived 120s — {_utc_now_iso()}"
 
 
+@mcp.tool
+async def delay_200s() -> str:
+    """Sleep for 200 seconds, then return a confirmation string with the current UTC timestamp.
+
+    Use this to test whether MCS tolerates a 200-second tool execution before timing out.
+    """
+    await asyncio.sleep(200)
+    return f"Survived 200s — {_utc_now_iso()}"
+
+
+@mcp.tool
+async def delay_300s() -> str:
+    """Sleep for 300 seconds, then return a confirmation string with the current UTC timestamp.
+
+    Use this to test whether MCS tolerates a 300-second (5-minute) tool execution before timing out.
+    """
+    await asyncio.sleep(300)
+    return f"Survived 300s — {_utc_now_iso()}"
+
+
+@mcp.tool
+async def delay_500s() -> str:
+    """Sleep for 500 seconds, then return a confirmation string with the current UTC timestamp.
+
+    Use this to test whether MCS tolerates a 500-second tool execution before timing out.
+    Likely beyond MCS's hard ceiling — useful as the upper bound of the probe ladder.
+    """
+    await asyncio.sleep(500)
+    return f"Survived 500s — {_utc_now_iso()}"
+
+
 if __name__ == "__main__":
     mcp.run(transport="streamable-http", host="0.0.0.0", port=8765)

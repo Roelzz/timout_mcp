@@ -123,3 +123,57 @@ paths:
               timestamp:
                 type: string
                 description: UTC ISO 8601 timestamp captured at response time.
+  /delay_200s:
+    get:
+      operationId: delay_200s
+      summary: Delay 200 seconds
+      x-ms-summary: Delay 200 seconds
+      description: Sleep for 200 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_300s:
+    get:
+      operationId: delay_300s
+      summary: Delay 300 seconds
+      x-ms-summary: Delay 300 seconds
+      description: Sleep for 300 seconds (5 minutes), then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_500s:
+    get:
+      operationId: delay_500s
+      summary: Delay 500 seconds
+      x-ms-summary: Delay 500 seconds
+      description: Sleep for 500 seconds, then return a confirmation string with the current UTC timestamp. Likely beyond MCS's hard ceiling.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
