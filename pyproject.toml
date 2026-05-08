@@ -1,0 +1,8 @@
+[project]
+name = "mcp-timeout-mcs"
+version = "0.1.0"
+description = "FastMCP server to test MCP timeout thresholds in Microsoft Copilot Studio."
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp",
+]

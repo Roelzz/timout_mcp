@@ -1,0 +1,125 @@
+swagger: "2.0"
+info:
+  title: MCP Timeout MCS
+  description: >-
+    Probe operations that sleep for a fixed number of seconds before responding.
+    Use these to discover the timeout ceiling Microsoft Copilot Studio enforces
+    on connector actions.
+  version: "1.0.0"
+host: timeoutmcp.test.roelschenk.com
+basePath: /
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /delay_5s:
+    get:
+      operationId: delay_5s
+      summary: Delay 5 seconds
+      x-ms-summary: Delay 5 seconds
+      description: Sleep for 5 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_10s:
+    get:
+      operationId: delay_10s
+      summary: Delay 10 seconds
+      x-ms-summary: Delay 10 seconds
+      description: Sleep for 10 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_30s:
+    get:
+      operationId: delay_30s
+      summary: Delay 30 seconds
+      x-ms-summary: Delay 30 seconds
+      description: Sleep for 30 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_60s:
+    get:
+      operationId: delay_60s
+      summary: Delay 60 seconds
+      x-ms-summary: Delay 60 seconds
+      description: Sleep for 60 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_90s:
+    get:
+      operationId: delay_90s
+      summary: Delay 90 seconds
+      x-ms-summary: Delay 90 seconds
+      description: Sleep for 90 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
+  /delay_120s:
+    get:
+      operationId: delay_120s
+      summary: Delay 120 seconds
+      x-ms-summary: Delay 120 seconds
+      description: Sleep for 120 seconds, then return a confirmation string with the current UTC timestamp.
+      responses:
+        "200":
+          description: Successful response after the delay completed.
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+                description: Confirmation message including the elapsed delay.
+              timestamp:
+                type: string
+                description: UTC ISO 8601 timestamp captured at response time.
