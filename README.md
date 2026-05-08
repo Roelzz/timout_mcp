@@ -58,7 +58,19 @@ uv sync
 uv run main.py
 ```
 
-The server binds `0.0.0.0:8765` and exposes the MCP endpoint at `/mcp`. Quick liveness check:
+The server binds `0.0.0.0:8765` and exposes the MCP endpoint at `/mcp`.
+
+**Reachable on this machine at**:
+
+| URL                                       | Use case                                        |
+| ----------------------------------------- | ----------------------------------------------- |
+| `http://localhost:8765/mcp`               | curl / MCP Inspector / Claude Desktop on the dev box |
+| `http://127.0.0.1:8765/mcp`               | same as above                                   |
+| `http://192.168.68.122:8765/mcp`          | other devices on the LAN, **including NPM**     |
+
+> The LAN IP `192.168.68.122` is the current address of `en0` on this Mac. It can change after a DHCP lease renewal — pin it in your router or rerun `ipconfig getifaddr en0` if probes start failing.
+
+Quick liveness check:
 
 ```bash
 curl -i -X POST http://localhost:8765/mcp \
@@ -67,4 +79,45 @@ curl -i -X POST http://localhost:8765/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
-A `200` (or `202` with an SSE stream) plus a JSON-RPC body listing the six `delay_*` tools means the server is healthy. Then point an MCP client (Claude Desktop, MCP Inspector, etc.) at `http://localhost:8765/mcp` to invoke individual tools.
+A `200` (or `202` with an SSE stream) plus a JSON-RPC body listing the six `delay_*` tools means the server is healthy.
+
+### 5a. Exposing the local dev server through NPM
+
+Use this to point `https://timeoutmcp.test.roelschenk.com` at your laptop instead of the Coolify deploy, so MCS can hit the live code while you iterate.
+
+In **Nginx Proxy Manager → Proxy Hosts → Add Proxy Host**:
+
+| Field                          | Value                              |
+| ------------------------------ | ---------------------------------- |
+| Domain Names                   | `timeoutmcp.test.roelschenk.com`   |
+| Scheme                         | `http`                             |
+| Forward Hostname / IP          | `192.168.68.122`                   |
+| Forward Port                   | `8765`                             |
+| Cache Assets                   | off                                |
+| Block Common Exploits          | off (it can interfere with SSE)    |
+| Websockets Support             | **on**                             |
+| SSL → Request a new SSL cert   | on, Force SSL on                   |
+
+Then in **Advanced → Custom Nginx Configuration** paste:
+
+```nginx
+proxy_http_version 1.1;
+proxy_set_header Connection "";
+proxy_buffering off;
+proxy_read_timeout 180s;
+proxy_send_timeout 180s;
+chunked_transfer_encoding on;
+```
+
+Without `proxy_buffering off` and a `proxy_read_timeout` ≥ 180s, NPM itself will cut off the longer probes (`delay_90s`, `delay_120s`) before the server responds — and you'd be measuring NPM, not MCS.
+
+Verify end-to-end after starting the server locally:
+
+```bash
+curl -i -X POST https://timeoutmcp.test.roelschenk.com/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+Same response as the localhost check above means the path `MCS → internet → NPM → 192.168.68.122:8765 → FastMCP` is clean and you can register the same URL in Copilot Studio (section 2).
